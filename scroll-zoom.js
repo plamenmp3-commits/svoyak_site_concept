@@ -18,7 +18,7 @@
 
     const viewport = window.innerHeight;
     const start = viewport * 0.92;
-    const end = viewport * 0.22;
+    const end = viewport * 0.045;
     const photos = Array.from(trips.querySelectorAll(selector), image => {
       const top = image.parentElement.getBoundingClientRect().top;
       const progress = Math.min(1, Math.max(0, (start - top) / (start - end)));
