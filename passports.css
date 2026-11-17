@@ -137,3 +137,32 @@ dialog.pp-dialog[open] { display: grid; place-items: center; animation: none; }
 .pp-stamp b { font: 700 clamp(7px,1vw,10px)/1 Onest, sans-serif; letter-spacing: .1em; }
 .pp-back figcaption { align-self: flex-start; max-width: 65%; font-size: clamp(15px,2.1vw,26px); }
 @media (max-width:600px) { .pp-stamp { right: 7%; bottom: 18%; } }
+
+/* Keep the document geometry steady while the real cover settles into the fan. */
+.pp-card.pp-flying { z-index: 3; }
+.pp-section.pp-landing { position: relative; z-index: 12; overflow: visible; }
+body:has(.pp-landing) { overflow: hidden; }
+body:has(.pp-landing) .mobile-bottom { display: none; }
+
+:is(.trip-dialog,.form-dialog,.menu-dialog)::backdrop {
+  background: rgb(18 18 18 / var(--sheet-dim, .64));
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+html[data-dialog-input="pointer"] dialog :is(.dialog-top .icon-button,.pp-dismiss):focus { outline: none; }
+@media (max-width:700px) {
+  dialog.trip-dialog {
+    position: fixed; inset: 0; margin: 0; width: 100%; max-width: 100%;
+    height: 100%; height: 100dvh; max-height: none;
+    border-radius: 0; overflow-y: auto; overscroll-behavior: contain;
+  }
+  .trip-dialog-inner { min-height: 100%; }
+  .trip-dialog .dialog-top { padding-top: calc(14px + env(safe-area-inset-top)); }
+  :is(.trip-dialog,.form-dialog,.menu-dialog) .dialog-top { touch-action: none; user-select: none; }
+  :is(.trip-dialog,.form-dialog,.menu-dialog) .dialog-top::before {
+    content: ""; position: absolute; left: 50%; top: 6px;
+    width: 28px; height: 3px; margin-left: -14px; border-radius: 3px; background: #a6a49d;
+  }
+  .trip-dialog .dialog-top::before { top: calc(6px + env(safe-area-inset-top)); }
+  :is(.menu-dialog,.form-dialog) .dialog-top { position: relative; }
+}
