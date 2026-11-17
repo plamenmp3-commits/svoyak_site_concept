@@ -138,12 +138,6 @@ dialog.pp-dialog[open] { display: grid; place-items: center; animation: none; }
 .pp-back figcaption { align-self: flex-start; max-width: 65%; font-size: clamp(15px,2.1vw,26px); }
 @media (max-width:600px) { .pp-stamp { right: 7%; bottom: 18%; } }
 
-/* Keep the document geometry steady while the real cover settles into the fan. */
-.pp-card.pp-flying { z-index: 3; }
-.pp-section.pp-landing { position: relative; z-index: 12; overflow: visible; }
-body:has(.pp-landing) { overflow: hidden; }
-body:has(.pp-landing) .mobile-bottom { display: none; }
-
 :is(.trip-dialog,.form-dialog,.menu-dialog)::backdrop {
   background: rgb(18 18 18 / var(--sheet-dim, .64));
   -webkit-backdrop-filter: none;

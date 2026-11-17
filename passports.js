@@ -100,29 +100,6 @@ function install(trips) {
     ];
   }
 
-  // Finish the flight on the fan button itself. The resting cover stays painted.
-  async function landOnCard() {
-    const pose = new DOMMatrixReadOnly(getComputedStyle(book).transform === 'none' ? undefined : getComputedStyle(book).transform);
-    const from = book.getBoundingClientRect();
-    const sx = Math.hypot(pose.a, pose.b) * book.offsetWidth / selected.offsetWidth;
-    const sy = Math.hypot(pose.c, pose.d) * book.offsetHeight / selected.offsetHeight;
-    const rotation = Math.atan2(pose.b, pose.a);
-    section.classList.add('pp-landing');
-    dialog.close();
-    const to = selected.getBoundingClientRect();
-    const dx = from.left + from.width / 2 - to.left - to.width / 2;
-    const dy = from.top + from.height / 2 - to.top - to.height / 2;
-    const start = `translateX(-50%) translate(${dx}px,${dy}px) rotate(${rotation}rad) scale(${sx},${sy})`;
-    const rest = `translateX(-50%) rotate(${selected.style.getPropertyValue('--pp-angle')})`;
-    selected.classList.replace('pp-selected','pp-flying');
-    const flight = selected.animate([{transform:start},{transform:rest}], {
-      duration:Math.min(370, 160 + Math.hypot(dx,dy) * .7), easing:'cubic-bezier(.24,.68,.22,1)'
-    });
-    await flight.finished.catch(() => {});
-    selected.classList.remove('pp-flying');
-    section.classList.remove('pp-landing');
-  }
-
   function open(index, trigger) {
     if (dialog.open || closing) return;
     const p = places[index];
@@ -147,25 +124,25 @@ function install(trips) {
     if (closing || !dialog.open) return;
     closing = true;
     if (animations.length && motion.matches) {
-      const rotation = getComputedStyle(leaf).transform;
-      const matrix = rotation === 'none' ? new DOMMatrixReadOnly() : new DOMMatrixReadOnly(rotation);
-      const angle = -Math.acos(Math.min(1, Math.max(-1, matrix.m11))) * 180 / Math.PI;
-      const currentPose = getComputedStyle(book).transform;
-      const opacity = getComputedStyle(shade).opacity;
-      for (const a of animations) a.pause();
-      const fold = {duration:Math.max(70, Math.abs(angle) * 1.8), easing, fill:'both'};
-      animations.push(
-        book.animate([{transform:currentPose},{transform:angle < -1 ? 'translateX(-50%)' : currentPose}],fold),
-        leaf.animate([{transform:`rotateY(${angle}deg)`},{transform:'rotateY(0deg)'}],fold),
-        shade.animate([{opacity},{opacity:0}],fold),
-        dismiss.animate([{opacity:getComputedStyle(dismiss).opacity},{opacity:0}],fold)
-      );
-      await Promise.allSettled(animations.slice(-4).map(a => a.finished));
-      await landOnCard();
-    } else {
-      selected.classList.remove('pp-selected');
-      dialog.close();
+      const flight = animations[0];
+      if (flight.playState === 'finished') {
+        // The viewport may have resized while the passport was open.
+        const frames = flight.effect.getKeyframes();
+        frames[0].transform = origin();
+        flight.effect.setKeyframes(frames);
+      }
+      for (const animation of animations) animation.reverse();
+      await Promise.allSettled(animations.map(a => a.finished));
+
+      // Both covers now occupy the same slot. Paint the lower one before fading the upper.
+      const fade = {duration:160, fill:'both', easing:'ease-in-out'};
+      const reveal = selected.animate([{opacity:0}, {offset:.4,opacity:1}, {opacity:1}], fade);
+      const dissolve = book.animate([{opacity:1}, {offset:.4,opacity:1}, {opacity:0}], fade);
+      animations.push(reveal, dissolve);
+      await Promise.allSettled([reveal.finished, dissolve.finished]);
     }
+    selected.classList.remove('pp-selected');
+    dialog.close();
     animations.forEach(a => a.cancel());
     animations = [];
     triggerButton.focus({preventScroll:true});
