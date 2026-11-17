@@ -135,9 +135,9 @@ function install(trips) {
       await Promise.allSettled(animations.map(a => a.finished));
 
       // Both covers now occupy the same slot. Paint the lower one before fading the upper.
-      const fade = {duration:160, fill:'both', easing:'ease-in-out'};
-      const reveal = selected.animate([{opacity:0}, {offset:.4,opacity:1}, {opacity:1}], fade);
-      const dissolve = book.animate([{opacity:1}, {offset:.4,opacity:1}, {opacity:0}], fade);
+      const fade = {duration:480, fill:'both'};
+      const reveal = selected.animate([{opacity:0, easing:'ease-out'}, {offset:.2,opacity:1}, {opacity:1}], fade);
+      const dissolve = book.animate([{opacity:1}, {offset:.25,opacity:1, easing:'ease-in-out'}, {opacity:0}], fade);
       animations.push(reveal, dissolve);
       await Promise.allSettled([reveal.finished, dissolve.finished]);
     }
