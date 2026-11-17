@@ -1,0 +1,112 @@
+.pp-section {
+  padding-block: clamp(58px, 8vw, 110px) 48px;
+  text-align: center;
+  border-bottom: 1px solid var(--line);
+}
+.pp-intro em { color: var(--purple); }
+.pp-intro p { margin: 14px 0 0; font-size: 15px; color: #50504c; }
+.pp-fan {
+  --card-w: clamp(94px, 24vw, 188px);
+  --step: clamp(40px, 10.3vw, 100px);
+  position: relative;
+  height: calc(var(--card-w) * 1.45 + 100px);
+  margin: 0 auto;
+  isolation: isolate;
+}
+.pp-cover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10% 8% 11%;
+  border: 1px solid #0004;
+  border-radius: 4px 8px 8px 4px;
+  background: linear-gradient(90deg,#0003, transparent 3%, #0002 5%, transparent 8%),
+    repeating-linear-gradient(36deg,transparent 0 2px,#fff1 2.3px,transparent 2.8px), var(--pp-color);
+  color: var(--pp-foil);
+  box-shadow: inset -2px 0 0 #0003, inset 0 0 0 1px #fff2;
+  line-height: 1;
+}
+.pp-card {
+  position: absolute;
+  width: var(--card-w);
+  aspect-ratio: .705;
+  left: calc(50% + var(--pp-i) * var(--step));
+  top: calc(32px + var(--pp-y) * 6px);
+  transform: translateX(-50%) rotate(calc(var(--pp-i) * 10deg));
+  padding: calc(var(--card-w) * .10) calc(var(--card-w) * .075);
+  font-size: var(--card-w);
+  box-shadow: -2px 4px 8px #17152130, 0 15px 24px -13px #231d344a;
+  transition: translate .2s;
+  touch-action: manipulation;
+}
+@media (hover:hover) { .pp-card:hover { translate: 0 -8px; } }
+.pp-card:focus-visible { z-index: 2; }
+.pp-selected { visibility: hidden; }
+.pp-serial { display: flex; justify-content: space-between; width: 100%; font-size: .059em; font-weight: 600; letter-spacing: .11em; }
+.pp-emblem { width: 54%; aspect-ratio: 1; border: 1px solid currentColor; outline: 1px solid currentColor; outline-offset: 3px; border-radius: 50%; display: grid; place-items: center; }
+.pp-emblem svg { width: 82%; }
+.pp-cover-name { font: italic 600 .178em/.96 'Cormorant Garamond', Georgia, serif; letter-spacing: -.055em; }
+.pp-cover-small { font-size: .052em; text-transform: uppercase; letter-spacing: .18em; }
+.pp-index { display: flex; justify-content: center; flex-wrap: wrap; gap: 2px clamp(8px, 2vw, 24px); }
+.pp-index button { min-height: 44px; padding: 4px; background: transparent; color: var(--ink); font-size: 14px; }
+.pp-index button:hover { text-decoration: underline; text-underline-offset: 4px; }
+.pp-index small { color: #655b77; font-size: 9px; margin-right: 4px; vertical-align: super; font-variant-numeric: tabular-nums; }
+dialog.pp-dialog {
+  --spread-w: min(calc(100vw - 28px), 820px, 116dvh);
+  --spread-h: min(calc(var(--spread-w) * .69 + 108px), 72dvh, 472px);
+  position: fixed; inset: 0; width: 100%; max-width: none; height: 100%; max-height: none;
+  padding: 0; margin: 0; border: 0; border-radius: 0; overflow: hidden; background: transparent;
+  color: #22211e; box-shadow: none; overscroll-behavior: contain;
+}
+dialog.pp-dialog[open] { display: grid; place-items: center; animation: none; }
+.pp-dialog::backdrop { background: rgb(19 18 23 / 74%); }
+.pp-dismiss {
+  position: absolute; z-index: 3; right: max(14px, env(safe-area-inset-right), calc((100% - var(--spread-w)) / 2));
+  bottom: calc(50% + var(--spread-h) / 2 + 10px);
+  width: 44px; height: 44px; border-radius: 50%; background: #faf8f0; color: #222;
+  font: 30px/1 Arial,sans-serif;
+}
+.pp-spread { width: var(--spread-w); height: var(--spread-h); pointer-events: none; }
+.pp-book {
+  position: relative; margin-left: 50%; width: 50%; height: 100%;
+  font-size: calc(var(--spread-w) / 2); perspective: 1300px; perspective-origin: left center;
+  pointer-events: auto;
+}
+.pp-page, .pp-front, .pp-leaf { position: absolute; inset: 0; }
+.pp-page { display: flex; flex-direction: column; padding: clamp(12px, 3.3vw, 36px); margin: 0; text-align: left; }
+.pp-right {
+  justify-content: safe center; overflow: auto; border-radius: 0 8px 8px 0;
+  background: linear-gradient(90deg,#cbbda6 0,#ece3d2 5%,#faf6eb 15%,#f7f0e2 98%,#cebea7);
+  box-shadow: inset -2px -3px #ddceba, 2px 6px 0 -2px var(--pp-color);
+}
+.pp-page-text { margin-block: auto; }
+.pp-code { display: block; font: 600 11px/1.4 Onest,sans-serif; color: var(--pp-color); letter-spacing: .14em; }
+.pp-page h2 { margin: 10px 0 18px; font: italic 600 clamp(26px, 5vw, 60px)/.98 'Cormorant Garamond',Georgia,serif; letter-spacing: -.065em; }
+.pp-page h3 { font-size: clamp(15px, 2vw, 23px); line-height: 1.12; margin-bottom: 7px; }
+.pp-page p { font-size: clamp(13px, 1.7vw, 18px); line-height: 1.48; letter-spacing: -.01em; }
+.pp-leaf { z-index: 1; transform-origin: left center; transform: rotateY(-180deg); transform-style: preserve-3d; }
+.pp-front, .pp-back { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.pp-front { transform: translateZ(1px); }
+.pp-back {
+  transform: rotateY(180deg); border-radius: 8px 0 0 8px;
+  background: linear-gradient(90deg,#f7eedc 85%,#ddd1bb 98%,#c6b59d);
+  box-shadow: inset 2px -3px #ddceba, -2px 6px 0 -2px var(--pp-color);
+  align-items: center; justify-content: center; gap: 12px;
+}
+.pp-back img { flex: 0 1 auto; width: 100%; height: 70%; min-height: 0; object-fit: cover; border: 4px solid #fffaf1; box-shadow: 0 3px 7px #34221630; transform: rotate(-3deg); }
+.pp-back figcaption { font: italic 600 clamp(17px, 2.4vw, 32px)/1 'Cormorant Garamond',Georgia,serif; text-align: center; }
+@media (max-width:600px) {
+  .pp-section { padding-inline: 12px; padding-bottom: 24px; overflow: clip; }
+  .pp-intro p { font-size: 13px; }
+  .pp-fan { height: calc(var(--card-w) * 1.45 + 90px); }
+  .pp-index { column-gap: 9px; max-width: 350px; margin-inline: auto; }
+  .pp-index button { min-width: 44px; }
+}
+@media (max-width:360px) {
+  .pp-fan { --card-w: 26vw; --step: 10vw; }
+  .pp-page { padding-inline: 10px; }
+}
+@media (max-height:440px) {
+  .pp-dismiss { bottom: auto; top: 8px; right: 8px; }
+}
