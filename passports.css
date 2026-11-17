@@ -4,13 +4,11 @@
   border-bottom: 1px solid var(--line);
 }
 .pp-intro em { color: var(--purple); white-space: nowrap; }
-.pp-rail { overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: thin; scrollbar-color: #c6c2cf transparent; }
 .pp-intro { margin-bottom: clamp(10px, 3vw, 38px); }
 html:has(.pp-section) { scrollbar-gutter: stable; }
 .pp-fan {
-  --card-w: clamp(124px, 19vw, 204px);
-  --step: calc(var(--card-w) * .91);
-  min-width: calc(var(--step) * 4 + var(--card-w) * 1.3 + 20px);
+  --card-w: clamp(94px, 24vw, 188px);
+  --step: clamp(40px, 10.3vw, 100px);
   position: relative;
   height: calc(var(--card-w) * 1.45 + 100px);
   margin: 0 auto;
@@ -36,7 +34,7 @@ html:has(.pp-section) { scrollbar-gutter: stable; }
   aspect-ratio: .79;
   left: calc(50% + var(--pp-i) * var(--step));
   top: calc(32px + var(--pp-y) * 6px);
-  transform: translateX(-50%) rotate(calc(var(--pp-i) * 5deg));
+  transform: translateX(-50%) rotate(var(--pp-angle));
   padding: calc(var(--card-w) * .10) calc(var(--card-w) * .075);
   font-size: var(--card-w);
   box-shadow: -2px 4px 8px #17152130, 0 15px 24px -13px #231d344a;
@@ -46,9 +44,16 @@ html:has(.pp-section) { scrollbar-gutter: stable; }
 .pp-card:focus-visible { z-index: 2; }
 .pp-selected { opacity: 0; }
 .pp-serial { display: flex; justify-content: space-between; width: 100%; align-items: center; font-size: .064em; font-weight: 600; letter-spacing: .11em; }
-.pp-emblem { width: 54%; aspect-ratio: 1; border: 1px solid currentColor; outline: 1px solid currentColor; outline-offset: 3px; border-radius: 50%; display: grid; place-items: center; }
+.pp-emblem { position: absolute; top: 55%; left: 59%; transform: translate(-50%,-50%); width: 49%; aspect-ratio: 1; border: 1px solid currentColor; outline: 1px solid currentColor; outline-offset: 3px; border-radius: 50%; display: grid; place-items: center; }
 .pp-emblem svg { width: 82%; }
-.pp-cover-name { font: italic 600 .178em/.96 'Cormorant Garamond', Georgia, serif; letter-spacing: -.055em; }
+.pp-cover-name {
+  position: absolute;
+  left: 8%; bottom: 10%;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font: 500 .122em/1 Onest, Arial, sans-serif;
+  letter-spacing: -.02em;
+}
 .pp-serial i { width: 41%; aspect-ratio: 752/217; background: currentColor; mask: url("./kit-wordmark.svg") center / contain no-repeat; }
 .pp-index { display: flex; justify-content: center; flex-wrap: wrap; gap: 2px clamp(8px, 2vw, 24px); }
 .pp-index button { min-height: 44px; padding: 4px; background: transparent; color: var(--ink); font-size: 14px; }
@@ -103,7 +108,6 @@ dialog.pp-dialog[open] { display: grid; place-items: center; animation: none; }
 @media (max-width:600px) {
   .pp-section { padding-inline: 12px; padding-bottom: 24px; overflow: clip; }
   .pp-intro h2 { font-size: clamp(36px, 8vw, 48px); }
-  .pp-rail { margin-inline: -12px; }
   .pp-index { margin-top: 10px; }
   .pp-page { padding: clamp(9px, 3vw, 17px); }
   .pp-page h2 { margin: 6px 0 10px; font-size: clamp(24px, 7vw, 34px); }
@@ -115,6 +119,7 @@ dialog.pp-dialog[open] { display: grid; place-items: center; animation: none; }
   .pp-index button { min-width: 44px; }
 }
 @media (max-width:360px) {
+  .pp-fan { --card-w: 26vw; --step: 10vw; }
   .pp-page { padding: 7px 9px; }
   .pp-page h2 { margin: 4px 0 6px; }
   .pp-page h3 { margin-bottom: 3px; }

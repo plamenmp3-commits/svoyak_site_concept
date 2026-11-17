@@ -32,7 +32,7 @@ function install(trips) {
   section.setAttribute('aria-labelledby', 'pp-heading');
   section.innerHTML = `<div class="pp-intro"><h2 id="pp-heading">Где ещё <em>не бывали?</em></h2>
     </div>
-    <div class="pp-rail"><div class="pp-fan"></div></div><div class="pp-index" aria-label="Выбор паспорта"></div>`;
+    <div class="pp-fan"></div><div class="pp-index" aria-label="Выбор паспорта"></div>`;
   trips.before(section);
   const heroLink = document.querySelector('.hero-copy a[href="#trips"]');
   if (heroLink) heroLink.href = '#passports';
@@ -45,6 +45,7 @@ function install(trips) {
     card.setAttribute('aria-label', 'Открыть паспорт — ' + place.name);
     card.setAttribute('aria-haspopup', 'dialog');
     card.style.setProperty('--pp-i', i - 2);
+    card.style.setProperty('--pp-angle', `${(i - 2) * 10}deg`);
     card.style.setProperty('--pp-y', Math.abs(i - 2) ** 2);
     ink(card, place);
     card.innerHTML = cover(place, i);
@@ -72,7 +73,6 @@ function install(trips) {
   const leaf = dialog.querySelector('.pp-leaf');
   const front = dialog.querySelector('.pp-front');
   const photo = dialog.querySelector('img');
-  const rail = section.querySelector('.pp-rail');
   const dismiss = dialog.querySelector('.pp-dismiss');
   const shade = document.createElement('div');
   shade.className = 'pp-shade';
@@ -86,8 +86,8 @@ function install(trips) {
     const slot = book.parentElement.getBoundingClientRect();
     const dx = card.left + card.width / 2 - (slot.left + slot.width * .75);
     const dy = card.top + card.height / 2 - (slot.top + slot.height / 2);
-    const angle = Number(selected.style.getPropertyValue('--pp-i')) * 5;
-    return `translate(${dx}px, ${dy}px) rotate(${angle}deg) scale(${selected.offsetWidth / book.offsetWidth}, ${selected.offsetHeight / book.offsetHeight})`;
+    const angle = selected.style.getPropertyValue('--pp-angle');
+    return `translate(${dx}px, ${dy}px) rotate(${angle}) scale(${selected.offsetWidth / book.offsetWidth}, ${selected.offsetHeight / book.offsetHeight})`;
   }
 
   function animate(opening) {
@@ -120,11 +120,6 @@ function install(trips) {
     const p = places[index];
     triggerButton = trigger;
     selected = cards[index];
-    const bounds = selected.getBoundingClientRect();
-    const railBox = rail.getBoundingClientRect();
-    if (bounds.left < railBox.left || bounds.right > railBox.right) {
-      rail.scrollLeft += bounds.left + bounds.width / 2 - railBox.left - railBox.width / 2;
-    }
     ink(book, p);
     front.innerHTML = cover(p, index);
     dialog.querySelector('.pp-stamp b').textContent = p.folio + ' · 0' + (index + 1);
