@@ -3,11 +3,14 @@
   text-align: center;
   border-bottom: 1px solid var(--line);
 }
-.pp-intro em { color: var(--purple); }
-.pp-intro p { margin: 14px 0 0; font-size: 15px; color: #50504c; }
+.pp-intro em { color: var(--purple); white-space: nowrap; }
+.pp-rail { overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: thin; scrollbar-color: #c6c2cf transparent; }
+.pp-intro { margin-bottom: clamp(10px, 3vw, 38px); }
+html:has(.pp-section) { scrollbar-gutter: stable; }
 .pp-fan {
-  --card-w: clamp(94px, 24vw, 188px);
-  --step: clamp(40px, 10.3vw, 100px);
+  --card-w: clamp(124px, 19vw, 204px);
+  --step: calc(var(--card-w) * .91);
+  min-width: calc(var(--step) * 4 + var(--card-w) * 1.3 + 20px);
   position: relative;
   height: calc(var(--card-w) * 1.45 + 100px);
   margin: 0 auto;
@@ -18,7 +21,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  padding: 10% 8% 11%;
+  padding: .1em .075em;
   border: 1px solid #0004;
   border-radius: 4px 8px 8px 4px;
   background: linear-gradient(90deg,#0003, transparent 3%, #0002 5%, transparent 8%),
@@ -30,37 +33,38 @@
 .pp-card {
   position: absolute;
   width: var(--card-w);
-  aspect-ratio: .705;
+  aspect-ratio: .79;
   left: calc(50% + var(--pp-i) * var(--step));
   top: calc(32px + var(--pp-y) * 6px);
-  transform: translateX(-50%) rotate(calc(var(--pp-i) * 10deg));
+  transform: translateX(-50%) rotate(calc(var(--pp-i) * 5deg));
   padding: calc(var(--card-w) * .10) calc(var(--card-w) * .075);
   font-size: var(--card-w);
   box-shadow: -2px 4px 8px #17152130, 0 15px 24px -13px #231d344a;
-  transition: translate .2s;
   touch-action: manipulation;
 }
-@media (hover:hover) { .pp-card:hover { translate: 0 -8px; } }
+@media (hover:hover) { .pp-card:hover { z-index: 1; outline: 1px solid var(--pp-color); outline-offset: 2px; } }
 .pp-card:focus-visible { z-index: 2; }
-.pp-selected { visibility: hidden; }
-.pp-serial { display: flex; justify-content: space-between; width: 100%; font-size: .059em; font-weight: 600; letter-spacing: .11em; }
+.pp-selected { opacity: 0; }
+.pp-serial { display: flex; justify-content: space-between; width: 100%; align-items: center; font-size: .064em; font-weight: 600; letter-spacing: .11em; }
 .pp-emblem { width: 54%; aspect-ratio: 1; border: 1px solid currentColor; outline: 1px solid currentColor; outline-offset: 3px; border-radius: 50%; display: grid; place-items: center; }
 .pp-emblem svg { width: 82%; }
 .pp-cover-name { font: italic 600 .178em/.96 'Cormorant Garamond', Georgia, serif; letter-spacing: -.055em; }
-.pp-cover-small { font-size: .052em; text-transform: uppercase; letter-spacing: .18em; }
+.pp-serial i { width: 41%; aspect-ratio: 752/217; background: currentColor; mask: url("./kit-wordmark.svg") center / contain no-repeat; }
 .pp-index { display: flex; justify-content: center; flex-wrap: wrap; gap: 2px clamp(8px, 2vw, 24px); }
 .pp-index button { min-height: 44px; padding: 4px; background: transparent; color: var(--ink); font-size: 14px; }
 .pp-index button:hover { text-decoration: underline; text-underline-offset: 4px; }
 .pp-index small { color: #655b77; font-size: 9px; margin-right: 4px; vertical-align: super; font-variant-numeric: tabular-nums; }
 dialog.pp-dialog {
-  --spread-w: min(calc(100vw - 28px), 820px, 116dvh);
-  --spread-h: min(calc(var(--spread-w) * .69 + 108px), 72dvh, 472px);
+  --spread-w: min(calc(100vw - 28px), 780px, 110dvh);
+  --spread-h: calc(var(--spread-w) / 1.58);
   position: fixed; inset: 0; width: 100%; max-width: none; height: 100%; max-height: none;
   padding: 0; margin: 0; border: 0; border-radius: 0; overflow: hidden; background: transparent;
   color: #22211e; box-shadow: none; overscroll-behavior: contain;
 }
 dialog.pp-dialog[open] { display: grid; place-items: center; animation: none; }
-.pp-dialog::backdrop { background: rgb(19 18 23 / 74%); }
+.pp-dialog::backdrop { background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; }
+.pp-shade { position: absolute; inset: 0; background: rgb(19 18 23 / 72%); }
+.pp-spread { position: relative; }
 .pp-dismiss {
   position: absolute; z-index: 3; right: max(14px, env(safe-area-inset-right), calc((100% - var(--spread-w)) / 2));
   bottom: calc(50% + var(--spread-h) / 2 + 10px);
@@ -94,19 +98,37 @@ dialog.pp-dialog[open] { display: grid; place-items: center; animation: none; }
   box-shadow: inset 2px -3px #ddceba, -2px 6px 0 -2px var(--pp-color);
   align-items: center; justify-content: center; gap: 12px;
 }
-.pp-back img { flex: 0 1 auto; width: 100%; height: 70%; min-height: 0; object-fit: cover; border: 4px solid #fffaf1; box-shadow: 0 3px 7px #34221630; transform: rotate(-3deg); }
+.pp-back img { flex: 0 1 auto; width: 100%; height: 64%; min-height: 0; object-fit: cover; border: 4px solid #fffaf1; box-shadow: 0 3px 7px #34221630; transform: rotate(-3deg); }
 .pp-back figcaption { font: italic 600 clamp(17px, 2.4vw, 32px)/1 'Cormorant Garamond',Georgia,serif; text-align: center; }
 @media (max-width:600px) {
   .pp-section { padding-inline: 12px; padding-bottom: 24px; overflow: clip; }
-  .pp-intro p { font-size: 13px; }
+  .pp-intro h2 { font-size: clamp(36px, 8vw, 48px); }
+  .pp-rail { margin-inline: -12px; }
+  .pp-index { margin-top: 10px; }
+  .pp-page { padding: clamp(9px, 3vw, 17px); }
+  .pp-page h2 { margin: 6px 0 10px; font-size: clamp(24px, 7vw, 34px); }
+  .pp-page h3 { font-size: 14px; margin-bottom: 5px; }
+  .pp-page p { font-size: 13px; line-height: 1.36; }
+  .pp-code { font-size: 9px; }
   .pp-fan { height: calc(var(--card-w) * 1.45 + 90px); }
   .pp-index { column-gap: 9px; max-width: 350px; margin-inline: auto; }
   .pp-index button { min-width: 44px; }
 }
 @media (max-width:360px) {
-  .pp-fan { --card-w: 26vw; --step: 10vw; }
-  .pp-page { padding-inline: 10px; }
+  .pp-page { padding: 7px 9px; }
+  .pp-page h2 { margin: 4px 0 6px; }
+  .pp-page h3 { margin-bottom: 3px; }
 }
 @media (max-height:440px) {
   .pp-dismiss { bottom: auto; top: 8px; right: 8px; }
 }
+.pp-stamp {
+  position: absolute; bottom: 11%; right: 9%; width: clamp(48px, 9vw, 84px);
+  aspect-ratio: 1.24; border: 2px solid currentColor; outline: 1px solid currentColor;
+  outline-offset: -5px; border-radius: 50%; color: #45367f; background: #f5eddaa6;
+  display: grid; justify-items: center; align-content: center; gap: 2px; transform: rotate(-14deg);
+}
+.pp-stamp i { width: 36%; aspect-ratio: 487/448; background: currentColor; mask: url("./kit-handseal.svg") center / contain no-repeat; }
+.pp-stamp b { font: 700 clamp(7px,1vw,10px)/1 Onest, sans-serif; letter-spacing: .1em; }
+.pp-back figcaption { align-self: flex-start; max-width: 65%; font-size: clamp(15px,2.1vw,26px); }
+@media (max-width:600px) { .pp-stamp { right: 7%; bottom: 18%; } }

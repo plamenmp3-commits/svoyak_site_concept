@@ -1,9 +1,9 @@
 const places = [
-  {name: 'Грузия', folio: 'GE', color: '#75392e', foil: '#ffdfaa', image: 'georgia.jpg', alt: 'Зелёная долина между горами в Грузии', caption: 'Казбеги', title: 'Утро в горах', text: 'Выйти пораньше, пока деревня только просыпается. Взять с собой хлеб из пекарни и найти камень с видом на долину. Завтрак может подождать ещё один кадр.'},
-  {name: 'Териберка', folio: 'RU', color: '#244c63', foil: '#cbebf3', image: 'teriberka.jpg', alt: 'Берег Баренцева моря под облачным небом', caption: 'Баренцево море', title: 'На краю воды', text: 'Спуститься к каменному пляжу, спрятать руки в рукава и слушать, как волна перекатывает гальку. Чай из термоса здесь заканчивается подозрительно быстро.'},
-  {name: 'Дагестан', folio: 'RU', color: '#344c39', foil: '#e0edaf', image: 'dagestan.jpg', alt: 'Горный пейзаж в Дагестане', caption: 'Дагестан', title: 'Дорога к аулу', text: 'За каждым поворотом хочется выйти из машины. Где-то дорога сужается до одной полосы, где-то горы вдруг расступаются. Остановимся там, где все разом скажут «вот здесь».'},
-  {name: 'Париж', folio: 'FR', color: '#563e62', foil: '#f5d6ee', image: 'paris.jpg', alt: 'Вид на Париж и Эйфелеву башню', caption: 'Париж', title: 'Вдоль Сены', text: 'Купить ещё тёплый багет и свернуть к воде. Пройти под мостом, присесть на парапет и решить, на каком берегу проведём остаток дня.'},
-  {name: 'Венеция', folio: 'IT', color: '#884730', foil: '#ffe2be', image: 'venice.jpg', alt: 'Дома вдоль канала в Венеции', caption: 'Венеция', title: 'Через мостик', text: 'Утром город слышно по шагам на мостовых. Свернём в переулок за первым запахом кофе, а потом выберем мостик, с которого видно, как лодки расходятся в тесном канале.'}
+  {name: 'Грузия', folio: 'GE', color: '#75392e', foil: '#ffdfaa', image: 'georgia.jpg', alt: 'Зелёная долина между горами в Грузии', caption: 'Казбеги', title: 'Утро в горах', text: 'Тёплый хлеб из пекарни берём с собой. Позавтракаем на камне с видом на долину.'},
+  {name: 'Териберка', folio: 'RU', color: '#244c63', foil: '#cbebf3', image: 'teriberka.jpg', alt: 'Берег Баренцева моря под облачным небом', caption: 'Баренцево море', title: 'На краю воды', text: 'Море перекатывает гальку. Прячем руки в рукава и греемся чаем из термоса.'},
+  {name: 'Дагестан', folio: 'RU', color: '#344c39', foil: '#e0edaf', image: 'dagestan.jpg', alt: 'Горный пейзаж в Дагестане', caption: 'Дагестан', title: 'Дорога к аулу', text: 'За поворотом горы расступаются. Остановимся там, где все разом скажут «вот здесь».'},
+  {name: 'Париж', folio: 'FR', color: '#563e62', foil: '#f5d6ee', image: 'paris.jpg', alt: 'Вид на Париж и Эйфелеву башню', caption: 'Париж', title: 'Вдоль Сены', text: 'Тёплый багет под мышкой, Сена за парапетом. На другой берег успеем после завтрака.'},
+  {name: 'Венеция', folio: 'IT', color: '#884730', foil: '#ffe2be', image: 'venice.jpg', alt: 'Дома вдоль канала в Венеции', caption: 'Венеция', title: 'Через мостик', text: 'За первым мостиком пахнет кофе. За вторым слышно, как лодка задевает веслом камень.'}
 ];
 
 const symbols = [
@@ -15,9 +15,9 @@ const symbols = [
 ];
 
 function cover(place, index) {
-  return `<span class="pp-serial">СВОЯК <span>№ 0${index + 1}</span></span>
+  return `<span class="pp-serial"><i aria-hidden="true"></i> <span>№ 0${index + 1}</span></span>
     <span class="pp-emblem"><svg aria-hidden="true" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${symbols[index]}</svg></span>
-    <span class="pp-cover-name">${place.name}</span><span class="pp-cover-small">Паспорт места</span>`;
+    <span class="pp-cover-name">${place.name}</span>`;
 }
 
 function ink(element, place) {
@@ -30,9 +30,9 @@ function install(trips) {
   section.id = 'passports';
   section.className = 'pp-section shell';
   section.setAttribute('aria-labelledby', 'pp-heading');
-  section.innerHTML = `<div class="pp-intro"><h2 id="pp-heading">Паспорта <em>мест.</em></h2>
-    <p>Выбери обложку, чтобы заглянуть внутрь.</p></div>
-    <div class="pp-fan"></div><div class="pp-index" aria-label="Выбор паспорта"></div>`;
+  section.innerHTML = `<div class="pp-intro"><h2 id="pp-heading">Где ещё <em>не бывали?</em></h2>
+    </div>
+    <div class="pp-rail"><div class="pp-fan"></div></div><div class="pp-index" aria-label="Выбор паспорта"></div>`;
   trips.before(section);
   const heroLink = document.querySelector('.hero-copy a[href="#trips"]');
   if (heroLink) heroLink.href = '#passports';
@@ -65,24 +65,69 @@ function install(trips) {
     <div class="pp-spread"><div class="pp-book">
       <div class="pp-page pp-right"><div class="pp-page-text"><small class="pp-code"></small><h2 id="pp-place"></h2><h3 class="pp-title"></h3><p class="pp-story"></p></div></div>
       <div class="pp-leaf"><div class="pp-front pp-cover" aria-hidden="true"></div>
-        <figure class="pp-page pp-back"><img alt=""><figcaption></figcaption></figure>
+        <figure class="pp-page pp-back"><img alt=""><figcaption></figcaption><span class="pp-stamp" aria-hidden="true"><i></i><b></b></span></figure>
       </div></div></div>`;
   document.body.append(dialog);
   const book = dialog.querySelector('.pp-book');
   const leaf = dialog.querySelector('.pp-leaf');
   const front = dialog.querySelector('.pp-front');
   const photo = dialog.querySelector('img');
-  let animations = [];
-  let triggerButton, selected, closing = false;
+  const rail = section.querySelector('.pp-rail');
+  const dismiss = dialog.querySelector('.pp-dismiss');
+  const shade = document.createElement('div');
+  shade.className = 'pp-shade';
+  dialog.prepend(shade);
+  const motion = matchMedia('(prefers-reduced-motion: no-preference)');
+  const easing = 'cubic-bezier(.4,0,.2,1)';
+  let animations = [], selected, triggerButton, closing = false;
+
+  function origin() {
+    const card = selected.getBoundingClientRect();
+    const slot = book.parentElement.getBoundingClientRect();
+    const dx = card.left + card.width / 2 - (slot.left + slot.width * .75);
+    const dy = card.top + card.height / 2 - (slot.top + slot.height / 2);
+    const angle = Number(selected.style.getPropertyValue('--pp-i')) * 5;
+    return `translate(${dx}px, ${dy}px) rotate(${angle}deg) scale(${selected.offsetWidth / book.offsetWidth}, ${selected.offsetHeight / book.offsetHeight})`;
+  }
+
+  function animate(opening) {
+    const closed = origin();
+    const timeline = {duration: opening ? 800 : 720, fill: 'both'};
+    const flight = opening
+      ? [{transform: closed}, {offset: .5, transform:'translateX(-50%)'}, {transform:'none'}]
+      : [{transform:getComputedStyle(book).transform}, {offset:.46, transform:'translateX(-50%)'}, {offset:.91, transform:closed}, {transform:closed}];
+    const turn = opening
+      ? [{transform:'rotateY(0deg)'}, {offset:.42, transform:'rotateY(0deg)'}, {transform:'rotateY(-180deg)'}]
+      : [{transform:'rotateY(-180deg)'}, {offset:.46, transform:'rotateY(0deg)'}, {transform:'rotateY(0deg)'}];
+    const frames = (items) => items.map(frame => ({...frame, easing}));
+    const dim = opening ? [0,1] : [Number(getComputedStyle(shade).opacity),0];
+    animations.forEach(a => a.cancel());
+    animations = [
+      book.animate(frames(flight),timeline),
+      leaf.animate(frames(turn),timeline),
+      shade.animate([{opacity:dim[0]}, {offset:opening ? .58 : .88,opacity:dim[1]}, {opacity:dim[1]}], timeline),
+      dismiss.animate([{opacity:opening ? 0 : 1}, {opacity:opening ? 1 : 0}], timeline)
+    ];
+    if (!opening) {
+      // The real cover comes back under its neighbours while the flying cover is already at rest.
+      animations.push(selected.animate([{opacity:0},{offset:.909,opacity:0},{offset:.91,opacity:1},{opacity:1}],timeline));
+      animations.push(book.animate([{opacity:1},{offset:.91,opacity:1},{opacity:0}],timeline));
+    }
+  }
+
   function open(index, trigger) {
-    if (dialog.open) return;
+    if (dialog.open || closing) return;
     const p = places[index];
     triggerButton = trigger;
     selected = cards[index];
-    const start = selected.getBoundingClientRect();
-    const tilt = (index - 2) * 10;
+    const bounds = selected.getBoundingClientRect();
+    const railBox = rail.getBoundingClientRect();
+    if (bounds.left < railBox.left || bounds.right > railBox.right) {
+      rail.scrollLeft += bounds.left + bounds.width / 2 - railBox.left - railBox.width / 2;
+    }
     ink(book, p);
     front.innerHTML = cover(p, index);
+    dialog.querySelector('.pp-stamp b').textContent = p.folio + ' · 0' + (index + 1);
     photo.src = './' + p.image;
     photo.alt = p.alt;
     dialog.querySelector('figcaption').textContent = p.caption;
@@ -92,36 +137,30 @@ function install(trips) {
     dialog.querySelector('.pp-story').textContent = p.text;
     dialog.showModal();
     selected.classList.add('pp-selected');
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches || !book.animate) return;
-    const end = book.getBoundingClientRect();
-    const dx = start.left + start.width / 2 - end.left - end.width / 2;
-    const dy = start.top + start.height / 2 - end.top - end.height / 2;
-    const first = `translate(${dx}px, ${dy}px) rotate(${tilt}deg) scale(${selected.offsetWidth / end.width}, ${selected.offsetHeight / end.height})`;
-    const timing = {duration: 840, fill: 'both'};
-    const easing = 'cubic-bezier(.22,.76,.22,1)';
-    animations = [
-      book.animate([{transform:first, easing}, {offset:.46, transform:'translateX(-50%)', easing}, {transform:'none'}], timing),
-      leaf.animate([{transform:'rotateY(0deg)'}, {offset:.46, transform:'rotateY(0deg)', easing}, {transform:'rotateY(-180deg)'}], timing)
-    ];
+    if (motion.matches && book.animate) animate(true);
   }
+
   async function close() {
     if (closing || !dialog.open) return;
     closing = true;
-    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      for (const animation of animations) { animation.playbackRate = -1.7; animation.play(); }
+    if (animations.length && motion.matches) {
+      if (animations[0].playState === 'finished') {
+        animate(false);
+      } else {
+        // Close from the current frame when tapped during lift-off.
+        for (const a of animations) a.reverse();
+      }
       await Promise.allSettled(animations.map(a => a.finished));
     }
+    selected.classList.remove('pp-selected');
     dialog.close();
-  }
-  dialog.addEventListener('cancel', e => { e.preventDefault(); close(); });
-  dialog.addEventListener('click', e => { if (e.target === dialog || e.target.closest('.pp-dismiss')) close(); });
-  dialog.addEventListener('close', () => {
     animations.forEach(a => a.cancel());
     animations = [];
-    selected.classList.remove('pp-selected');
     triggerButton.focus({preventScroll:true});
     closing = false;
-  });
+  }
+  dialog.addEventListener('cancel', e => { e.preventDefault(); close(); });
+  dialog.addEventListener('click', e => { if (e.target === dialog || e.target === shade || e.target === dismiss) close(); });
   if (location.hash === '#passports') section.scrollIntoView({behavior:'instant'});
 }
 
